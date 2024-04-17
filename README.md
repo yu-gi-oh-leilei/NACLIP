@@ -1,4 +1,5 @@
 # NACLIP: Training-Free Open-Vocabulary Semantic Segmentation
+Notably, unlike the [unmodified project](https://github.com/sinahmr/NACLIP), this work incorporates multi-GPU support for distributed verification, leading to faster processing.
 
 > **Abstract:** Despite the significant progress in deep learning for dense visual recognition problems, such as semantic segmentation, traditional methods are constrained by fixed class sets. Meanwhile, vision-language foundation models, such as CLIP, have showcased remarkable effectiveness in numerous zero-shot image-level tasks, owing to their robust generalizability. Recently, a body of work has investigated utilizing these models in open-vocabulary semantic segmentation (OVSS). However, existing approaches often rely on impractical supervised pre-training or access to additional pre-trained networks. In this work, we propose a strong baseline for training-free OVSS, termed Neighbour-Aware CLIP (NACLIP), representing a straightforward adaptation of CLIP tailored for this scenario. Our method enforces localization of patches in the self-attention of CLIP's vision transformer which, despite being crucial for dense prediction tasks, has been overlooked in the OVSS literature. By incorporating design choices favouring segmentation, our approach significantly improves performance without requiring additional data, auxiliary pre-trained networks, or extensive hyperparameter tuning, making it highly practical for real-world applications. Experiments are performed on 8 popular semantic segmentation benchmarks, yielding state-of-the-art performance on most scenarios.
 
@@ -31,20 +32,29 @@ python ./datasets/cvt_coco_object.py PATH_TO_COCO_STUFF164K -o PATH_TO_COCO_OBJE
 
 ## &#x1F9EA; Evaluation
 To evaluate our approach on a single benchmark, run the following command:
-```
+```python
 python eval.py --config ./configs/cfg_{benchmark_name}.py
 ```
 
 You can also do the evaluation on all the benchmarks using the `test_all.sh` script, whose general syntax is:
-```
+```shell
 bash test_all.sh {arch} {attn} {gaussian_std} {pamr} {gpu} {log_path}
 ```
 Values of `reduced` for `{arch}`, and `naclip` for `{attn}` represent our method.
 For example, to reproduce the main results, run:
-```
+```shell
 bash test_all.sh reduced naclip 5 on {gpu} {log_path}
 ```
-
+ 
+Evaluation on Multi-GPU with Distributed Data Parallel
+For example, to reproduce the main results, run:
+```shell
+bash ./dist_test.sh ./configs/cfg_{benchmark_name}.py
+```
+or
+```shell
+bash ./dist_test_all_dataset.sh
+```
 
 ### &#x1F4CA; Results
 

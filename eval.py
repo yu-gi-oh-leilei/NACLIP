@@ -1,3 +1,5 @@
+import os
+# os.environ['CUDA_VISIBLE_DEVICES'] = '4,5,6,7'
 import argparse
 
 from mmengine.config import Config
@@ -17,9 +19,21 @@ def parse_args():
     parser.add_argument('--pamr', default='')
     parser.add_argument('--work-dir', default='./work_logs/')
     parser.add_argument('--show-dir', default='', help='directory to save visualization images')
+    
+    parser.add_argument(
+        '--launcher',
+        choices=['none', 'pytorch', 'slurm', 'mpi'],
+        default='none',
+        help='job launcher')
+    # When using PyTorch version >= 2.0.0, the `torch.distributed.launch`
+    # will pass the `--local-rank` parameter to `tools/train.py` instead
+    # of `--local_rank`.
+    parser.add_argument('--local_rank', '--local-rank', type=int, default=0)
     args = parser.parse_args()
-    return args
+    if 'LOCAL_RANK' not in os.environ:
+        os.environ['LOCAL_RANK'] = str(args.local_rank)
 
+    return args
 
 def trigger_visualization_hook(cfg, show_dir):
     default_hooks = cfg.default_hooks
@@ -46,6 +60,7 @@ def main():
     args = parse_args()
 
     cfg = Config.fromfile(args.config)
+    cfg.launcher = args.launcher
     cfg.work_dir = args.work_dir
 
     safe_set_arg(cfg, args.backbone, 'clip_path')

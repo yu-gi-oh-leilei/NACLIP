@@ -1,0 +1,383 @@
+2024/04/17 17:20:58 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.10.13 (main, Sep 11 2023, 13:44:35) [GCC 11.2.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 1650074103
+    GPU 0,1,2,3,4,5,6,7: NVIDIA GeForce RTX 4090
+    CUDA_HOME: /usr/local/cuda-12.2
+    NVCC: Cuda compilation tools, release 12.2, V12.2.140
+    GCC: gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    PyTorch: 2.2.1
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2023.1-Product Build 20230303 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.3.2 (Git Hash 2dc95a2ad0841e29db8b22fbccaf3e5da7992b01)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=2.2.1, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+    TorchVision: 0.17.1
+    OpenCV: 4.9.0
+    MMEngine: 0.10.3
+
+Runtime environment:
+    cudnn_benchmark: True
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 1650074103
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 4
+------------------------------------------------------------
+
+2024/04/17 17:20:58 - mmengine - INFO - Config:
+data_root = '/mnt/disk2/mmsegmentationdataset/coco_stuff10k/'
+dataset_type = 'COCOStuffDataset'
+default_hooks = dict(
+    checkpoint=dict(by_epoch=False, interval=2000, type='CheckpointHook'),
+    logger=dict(interval=50, log_metric_by_epoch=False, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(interval=1, type='SegVisualizationHook'))
+default_scope = 'mmseg'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+launcher = 'pytorch'
+load_from = None
+log_level = 'INFO'
+log_processor = dict(by_epoch=False)
+model = dict(
+    arch='reduced',
+    attn_strategy='naclip',
+    clip_path='ViT-B/16',
+    gaussian_std=5.0,
+    name_path='./configs/cls_coco_stuff.txt',
+    pamr_steps=10,
+    type='NACLIP')
+resume = False
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        data_prefix=dict(
+            img_path='images/test2014', seg_map_path='annotations/test2014'),
+        data_root='/mnt/disk2/mmsegmentationdataset/coco_stuff10k/',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                2048,
+                336,
+            ), type='Resize'),
+            dict(reduce_zero_label=True, type='LoadAnnotations'),
+            dict(type='PackSegInputs'),
+        ],
+        reduce_zero_label=True,
+        type='COCOStuffDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    iou_metrics=[
+        'mIoU',
+    ], type='IoUMetric')
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(keep_ratio=True, scale=(
+        2048,
+        336,
+    ), type='Resize'),
+    dict(reduce_zero_label=True, type='LoadAnnotations'),
+    dict(type='PackSegInputs'),
+]
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='SegLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = './work_logs'
+
+2024/04/17 17:21:04 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+2024/04/17 17:21:05 - mmengine - WARNING - The prefix is not set in metric class IoUMetric.
+2024/04/17 17:22:02 - mmengine - INFO - Iter(test) [ 50/250]    eta: 0:03:49  time: 0.6143  data_time: 0.0020  memory: 22818  
+2024/04/17 17:22:52 - mmengine - INFO - Iter(test) [100/250]    eta: 0:02:40  time: 0.7610  data_time: 0.0021  memory: 22957  
+2024/04/17 17:23:25 - mmengine - INFO - Iter(test) [150/250]    eta: 0:01:33  time: 0.8568  data_time: 0.0021  memory: 21437  
+2024/04/17 17:23:55 - mmengine - INFO - Iter(test) [200/250]    eta: 0:00:42  time: 0.6870  data_time: 0.0019  memory: 23057  
+2024/04/17 17:24:22 - mmengine - INFO - Iter(test) [250/250]    eta: 0:00:00  time: 0.6648  data_time: 0.0017  memory: 22506  
+2024/04/17 17:24:23 - mmengine - INFO - per class results:
+2024/04/17 17:24:23 - mmengine - INFO - 
++------------------+-------+-------+
+|      Class       |  IoU  |  Acc  |
++------------------+-------+-------+
+|      person      | 17.87 |  18.0 |
+|     bicycle      | 42.75 | 81.56 |
+|       car        | 46.74 | 61.89 |
+|    motorcycle    | 63.41 | 68.92 |
+|     airplane     |  64.9 | 74.19 |
+|       bus        | 61.18 | 78.05 |
+|      train       | 45.31 | 55.65 |
+|      truck       | 52.29 | 77.12 |
+|       boat       | 55.37 | 88.78 |
+|  traffic light   | 34.74 | 89.89 |
+|   fire hydrant   | 64.15 |  71.6 |
+|    stop sign     | 71.17 | 85.16 |
+|  parking meter   | 37.57 | 38.41 |
+|      bench       |  24.2 | 29.75 |
+|       bird       | 46.04 |  56.0 |
+|       cat        | 83.15 | 89.61 |
+|       dog        | 73.39 | 81.41 |
+|      horse       | 71.12 |  92.4 |
+|      sheep       |  70.2 | 82.78 |
+|       cow        | 75.78 | 80.53 |
+|     elephant     | 81.25 | 84.91 |
+|       bear       | 62.21 | 89.76 |
+|      zebra       | 72.85 | 82.06 |
+|     giraffe      | 70.52 |  86.5 |
+|     backpack     |  6.51 | 70.48 |
+|     umbrella     | 51.36 | 64.91 |
+|     handbag      |  12.9 |  24.7 |
+|       tie        | 14.43 | 94.18 |
+|     suitcase     | 56.09 | 58.51 |
+|     frisbee      | 46.32 | 49.66 |
+|       skis       |  3.62 | 76.48 |
+|    snowboard     |  6.47 |  6.81 |
+|   sports ball    |  2.23 | 29.49 |
+|       kite       | 37.47 | 46.77 |
+|   baseball bat   |  2.81 | 67.62 |
+|  baseball glove  |  9.9  | 93.82 |
+|    skateboard    | 17.99 | 69.14 |
+|    surfboard     | 59.91 | 87.95 |
+|  tennis racket   | 14.57 | 43.55 |
+|      bottle      | 34.51 | 40.63 |
+|    wine glass    | 48.18 | 84.36 |
+|       cup        |  24.1 | 27.21 |
+|       fork       |  7.61 | 24.54 |
+|      knife       | 50.52 | 60.09 |
+|      spoon       | 21.22 | 43.65 |
+|       bowl       | 14.19 | 14.99 |
+|      banana      | 44.61 |  56.2 |
+|      apple       | 28.32 | 31.51 |
+|     sandwich     | 62.97 | 75.22 |
+|      orange      |  23.9 | 55.06 |
+|     broccoli     | 72.24 | 92.77 |
+|      carrot      |  33.4 | 36.51 |
+|     hot dog      | 51.02 | 79.96 |
+|      pizza       | 74.76 | 80.27 |
+|      donut       | 53.74 | 77.07 |
+|       cake       | 51.79 | 61.84 |
+|      chair       | 21.97 | 28.92 |
+|      couch       | 51.65 | 75.93 |
+|   potted plant   |  3.95 |  4.11 |
+|       bed        | 43.45 | 53.54 |
+|   dining table   | 25.46 | 30.53 |
+|      toilet      | 44.19 | 81.85 |
+|        tv        | 43.87 | 48.35 |
+|      laptop      | 49.48 | 55.26 |
+|      mouse       | 20.12 | 20.76 |
+|      remote      | 43.14 | 72.14 |
+|     keyboard     | 54.24 | 63.45 |
+|    cell phone    | 34.13 | 55.87 |
+|    microwave     | 23.04 | 29.69 |
+|       oven       | 35.25 | 62.91 |
+|     toaster      |  0.0  |  0.0  |
+|       sink       | 44.01 | 69.01 |
+|   refrigerator   | 30.63 | 81.32 |
+|       book       | 33.56 | 34.29 |
+|      clock       | 53.24 | 90.01 |
+|       vase       | 25.23 | 36.62 |
+|     scissors     | 46.85 | 61.64 |
+|    teddy bear    | 62.18 | 66.89 |
+|    hair drier    |  1.33 | 18.09 |
+|    toothbrush    | 14.89 | 29.52 |
+|      banner      | 21.49 | 54.74 |
+|     blanket      |  7.03 |  40.4 |
+|      branch      |  0.02 |  0.42 |
+|      bridge      |  5.46 |  8.76 |
+|  building-other  | 30.52 |  34.8 |
+|       bush       | 16.96 |  39.9 |
+|     cabinet      |  6.21 | 13.19 |
+|       cage       |  0.0  |  0.0  |
+|    cardboard     | 35.38 | 45.88 |
+|      carpet      | 45.87 | 60.43 |
+|  ceiling-other   | 48.39 |  73.1 |
+|   ceiling-tile   |  0.21 |  0.36 |
+|      cloth       |  1.95 |  5.1  |
+|     clothes      |  3.7  | 44.01 |
+|      clouds      | 42.83 | 59.23 |
+|     counter      | 14.54 | 31.15 |
+|     cupboard     | 12.65 | 36.65 |
+|     curtain      | 38.14 | 65.46 |
+|    desk-stuff    |  8.9  | 11.43 |
+|       dirt       | 14.12 | 27.26 |
+|    door-stuff    | 24.27 | 34.83 |
+|      fence       | 26.05 | 33.52 |
+|   floor-marble   |  0.0  |  0.0  |
+|   floor-other    |  8.86 | 53.09 |
+|   floor-stone    | 12.17 | 44.45 |
+|    floor-tile    | 29.28 | 31.72 |
+|    floor-wood    | 35.53 | 72.75 |
+|      flower      | 17.22 | 62.15 |
+|       fog        |  0.02 |  0.16 |
+|    food-other    | 10.15 | 76.17 |
+|      fruit       | 35.08 | 92.97 |
+| furniture-other  |  3.97 |  5.95 |
+|      grass       | 63.05 | 86.28 |
+|      gravel      |  20.2 | 45.98 |
+|   ground-other   |  3.92 | 10.81 |
+|       hill       | 22.93 | 72.06 |
+|      house       | 16.47 | 39.98 |
+|      leaves      |  2.18 | 16.06 |
+|      light       | 13.24 | 26.58 |
+|       mat        |  0.52 |  8.33 |
+|      metal       |  0.0  |  0.0  |
+|   mirror-stuff   |  4.13 |  4.24 |
+|       moss       |  0.0  |  0.0  |
+|     mountain     | 31.52 | 49.87 |
+|       mud        |  5.74 | 46.89 |
+|      napkin      |  1.07 | 94.12 |
+|       net        | 14.66 | 25.07 |
+|      paper       |  4.75 | 13.83 |
+|     pavement     | 28.54 | 78.49 |
+|      pillow      |  0.0  |  0.0  |
+|   plant-other    |  9.7  | 14.73 |
+|     plastic      | 25.82 | 36.68 |
+|     platform     |  1.74 |  1.82 |
+|   playingfield   |  0.01 |  0.01 |
+|     railing      |  6.02 |  7.24 |
+|     railroad     | 37.98 | 67.87 |
+|      river       | 34.27 | 68.58 |
+|       road       | 28.76 | 32.22 |
+|       rock       | 46.64 | 50.14 |
+|       roof       | 20.48 | 58.15 |
+|       rug        | 27.19 | 68.34 |
+|      salad       | 10.38 | 66.15 |
+|       sand       | 52.17 | 81.83 |
+|       sea        | 51.53 | 59.19 |
+|      shelf       |  1.29 |  1.37 |
+|    sky-other     | 47.15 | 57.84 |
+|    skyscraper    |  3.25 |  3.93 |
+|       snow       | 72.75 | 77.57 |
+|   solid-other    |  0.0  |  nan  |
+|      stairs      | 19.32 | 30.42 |
+|      stone       |  3.26 | 11.02 |
+|      straw       | 15.02 | 26.99 |
+| structural-other |  8.89 | 11.31 |
+|      table       |  4.83 | 12.71 |
+|       tent       | 54.74 |  91.4 |
+|  textile-other   |  0.02 |  0.03 |
+|      towel       |  7.68 | 36.67 |
+|       tree       | 50.35 | 55.15 |
+|    vegetable     | 38.52 | 70.69 |
+|    wall-brick    | 27.95 |  45.2 |
+|  wall-concrete   | 18.21 | 48.73 |
+|    wall-other    | 37.41 | 50.22 |
+|    wall-panel    |  0.01 |  0.01 |
+|    wall-stone    |  23.2 | 45.33 |
+|    wall-tile     | 41.46 | 57.93 |
+|    wall-wood     | 20.29 | 50.62 |
+|   water-other    | 20.92 | 33.71 |
+|    waterdrops    |  0.0  |  nan  |
+|   window-blind   | 34.04 | 52.79 |
+|   window-other   | 23.96 | 36.22 |
+|       wood       |  1.99 | 16.42 |
++------------------+-------+-------+
+2024/04/17 17:24:23 - mmengine - INFO - Iter(test) [250/250]    aAcc: 48.5300  mIoU: 28.9600  mAcc: 47.6800  data_time: 0.0030  time: 0.7915
