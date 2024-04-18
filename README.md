@@ -63,6 +63,7 @@ With the default setup in this repo, the following results (mIoU) should be achi
 <table>
 <thead>
   <tr>
+    <th>Dataset</th>
     <th>VOC21</th>
     <th>PC60</th>
     <th>COCO Obj</th>
@@ -76,6 +77,7 @@ With the default setup in this repo, the following results (mIoU) should be achi
 </thead>
 <tbody>
   <tr>
+    <th>Paper</th>
     <td>62.36</td>
     <td>34.99</td>
     <td>36.19</td>
@@ -84,6 +86,20 @@ With the default setup in this repo, the following results (mIoU) should be achi
     <td>38.35</td>
     <td>19.05</td>
     <td>25.18</td>
+    <td>41.87</td>
+  </tr>
+</tbody>
+<tbody>
+  <tr>
+    <th>Reproduce</th>
+    <td>62.36</td>
+    <td>34.99</td>
+    <td>36.20</td>
+    <td>80.59</td>
+    <td>38.26</td>
+    <td>38.34</td>
+    <td>19.05</td>
+    <td>25.17</td>
     <td>41.87</td>
   </tr>
 </tbody>
