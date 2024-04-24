@@ -109,3 +109,18 @@ With the default setup in this repo, the following results (mIoU) should be achi
 ## &#x1F64F; Acknowledgments
 
 We gratefully thank the authors of [SCLIP](https://github.com/wangf3014/SCLIP), [CLIP](https://github.com/openai/CLIP), and [MMSegmentation](https://github.com/open-mmlab/mmsegmentation), on which our code is based.
+
+
+## &#x1F4DA; Citation
+
+If you find this project useful, please consider citing:
+
+```bibtex
+@article{hajimiri2024naclip,
+  title={Pay Attention to Your Neighbours: Training-Free Open-Vocabulary Semantic Segmentation},
+  author={Hajimiri, Sina and Ben Ayed, Ismail and Dolz, Jose},
+  year={2024}
+  journal={arXiv preprint},
+  url={https://arxiv.org/abs/2404.08181},
+}
+```
